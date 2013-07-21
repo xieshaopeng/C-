@@ -1,0 +1,13 @@
+1.
+
+private void subtractValues()
+{
+int lhs = int.Parse(lhsOperand.Text);
+int rhs = int.Parse(rhsOperand.Text);
+int outcome;  //先定义变量类型
+outcome = lhs - rhs;
+expression.Text = lhsOperand.Text + " - " + rhsOperand.Text;
+result.Text = outcome.ToString();
+} 
+
+2.
