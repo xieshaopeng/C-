@@ -145,7 +145,30 @@ i++;
 while (i < 10);
 
 13.
+//插入数据库 
 
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data.SqlClient;
+
+namespace dbtest1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string myConnectionString = "Initial Catalog=test;Data Source=localhost;Integrated Security=SSPI;";
+            SqlConnection myConnection = new SqlConnection(myConnectionString);
+            string myInsertQuery = "INSERT INTO test (name,age) Values('xsp',12)";
+            SqlCommand myCommand = new SqlCommand(myInsertQuery);
+            myCommand.Connection = myConnection;
+            myConnection.Open();
+            myCommand.ExecuteNonQuery();
+            myCommand.Connection.Close();
+        }
+    }
+}
 
 
 
