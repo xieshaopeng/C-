@@ -216,6 +216,42 @@ namespace ConsoleApplication1
 }
 
 
+15.
+/*read website to end  &  GET*/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+using System.Net;
+namespace ConsoleApplication2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Create the web request  
+            HttpWebRequest request = WebRequest.Create("http://www.renrendai.com") as HttpWebRequest;
+
+            // Get response  
+            using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+            {
+                // Get the response stream  
+                StreamReader reader = new StreamReader(response.GetResponseStream());
+
+                // Console application output  
+                Console.WriteLine(reader.ReadToEnd());
+            }  
+
+        }
+    }
+}
+
+// StreamReader  读下去
+// StringBuilder  
+
 
 
 
