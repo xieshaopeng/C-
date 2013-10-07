@@ -1,0 +1,255 @@
+ ########################1002###########################
+ 1.
+ public static string
+ //全局定义为静态字符串
+ 
+ 2.
+ //C#中static void Main(string[ ] args)中的作用及解释
+static 表示方法是静态的就是说方法在程序被编译的时候就被分配了内存，使用的时候不用生成某个类型的对象，知道程序退出才释放。
+void 表示方法没有返回值，就是方法没有renturn 关键字。
+main 是方法名，当然这个方法是特殊的方法，是Main（）就是说是主函数，就是整个程序的入口，程序被编译后从这里开始执行，这也是main方法要是static的原因，因为在啥都没做的时候这个函数就得存在。
+string[] args 表示命令行参数是字符串数组，就是说，你在命令行（黑框框）里输入的参数可以使多个字符串（在某种意义上意味着什么都可以是命令行参数）。
+运行时会弹出命令窗口，你可以在那里输入一些参数，string[] args 指的就是你在命令窗口输入的参数。args是用来处理命令行参数的。命令行参数，就是你运行这个程序的时候给它传的参数。它是可选项，不是必须的。
+
+如何向C# Main函数传递参数呢？我们看到C# Main函数带有一个string[] args参数，那么你知道它有什么实际的功能呢？下面我们来具体谈谈：
+C＃控制台应用程序下，我们常常看到Main函数带有一个string[] args参数，那么你知道它有什么用处？
+步骤1：建立一个控制台应用程序，暂且命名为Main.cs
+步骤2：贴上下面这段代码。
+
+3.
+//ASCIIEncoding类
+编码是一个将一组 Unicode 字符转换为一个字节序列的过程。解码是将一个编码字节序列转换为一组 Unicode 字符的过程。
+
+ASCIIEncoding 对应于 Windows 代码页 20127。ASCII 字符限于最低 128 个 Unicode 字符（从 U+0000 到 U+007F）。有关 System.Text 所支持的编码的更多信息，
+
+4.
+// my first POST example
+
+using System;
+using System.IO;
+using System.Net;
+using System.Text;
+
+namespace Examples.System.Net
+{
+    public class WebRequestPostExample
+    {
+        public static void Main()
+        {
+            string strId = "cruzone";
+            string strPassword = "wangfeng123";
+
+            ASCIIEncoding enconding = new ASCIIEncoding();
+            string postData = "UserName=" + strId;
+            postData += ("Password=" + strPassword);
+
+            byte[] data = enconding.GetBytes(postData);
+
+
+            HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create("http://www.ppdai.com/login");
+
+            myRequest.Method = "POST";
+            myRequest.ContentType = "application/x-www-form-urlencoded";
+            myRequest.ContentLength = data.Length;
+            Stream newStream = myRequest.GetRequestStream();
+
+            newStream.Write(data, 0, data.Length);
+            newStream.Close();
+
+            HttpWebResponse myResponse = (HttpWebResponse)myRequest.GetResponse();
+            StreamReader reader = new StreamReader(myResponse.GetResponseStream());
+         
+            Console.WriteLine(reader.ReadToEnd());
+
+
+
+
+        }
+    }
+}
+
+
+
+5.
+//强制转换
+int.Parse(string类型变量名)         该方式是将数字内容的字符串转为int类型，
+
+
+
+6.
+// one raw crawl
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+using System.Net;
+using System.Data.SqlClient;
+using System.Data;
+
+
+
+
+namespace ConsoleApplication2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Create the web request  
+            string url = "http://www.baidu.com/s?wd=";
+            string query = "1.1.1.1";
+
+            HttpWebRequest request = WebRequest.Create(url+query) as HttpWebRequest;
+
+            // Get response  
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            StreamReader reader = new StreamReader(response.GetResponseStream());
+            //Console.WriteLine(reader.ReadToEnd());
+
+            //insert into DB
+            string localConnection = "Initial Catalog=test;Data Source=localhost;Integrated Security=SSPI ";
+            SqlConnection _db = new SqlConnection(localConnection);
+            string myInsert = "insert into new_test(id,body) values(2,@body)";
+           // var  @body = reader;
+            using (SqlConnection connection = new SqlConnection(localConnection))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(myInsert, connection))
+                {
+                    command.Parameters.Add("@body", reader);
+                    command.ExecuteNonQuery();
+                }
+
+            }
+
+
+
+        }
+    }
+}
+
+
+6.
+C#数据类型转换 
+ 在应用程序编程时，数据类型转换是常见的，各种编程语言都是重要的内容。  
+ 这里考虑整型、实型、字符串型、日期型之间的转换。 bool型不需要转换，其它类型则更为复杂。
+ 对象和变量之间的转换则是“装箱”“拆箱”。   基本的方法为3种：  直接赋值  在数值型之间都可以这样，但有可能丢失数据
+ 。 用类型中的ToString()方法，或Parse()等方法 用系统的Convert对象，该对象就是进行类型转换的 有些情况，几种方法都可以实现。  
+[a]  int long  float double  直接赋值就可以 
+[b]  数值型转string，都可以用ToString()     
+如：      byte a = 1; short b = a; int c = b;     long d = c; float e = d; double f = e;   
+  this.textBox1.Text = "";      this.textBox1.AppendText("byte a = " + a.ToString() + "\n");  
+  this.textBox1.AppendText("short b = " + b.ToString() + "\n");     this.textBox1.AppendText("int c = " + c.ToString() + "\n");    
+  this.textBox1.AppendText("long d = " + d.ToString() + "\n");     this.textBox1.AppendText("float e = " + e.ToString() + "\n");   
+  this.textBox1.AppendText("double f = " + f.ToString() + "\n"); 
+[c]  string转字符 
+        int x;         long y;         float p;         double q;        
+		string str="50";         x = int.Parse(str);         y = long.Parse(str);    
+		p = float.Parse(str);         q = double.Parse(str);  ========================================== 
+[d] Convert对象 
+  ToInt32();  //转换成32位的整数 ToInt16();  //转换成16位的整数 ToBoolean();  
+  //转换成 bool 值 ToString();  //转换成 字符串 ToDouble();  //转换成小数
+  例：double x;      string str=”30”;      x = Convert.ToDouble(str);  
+[e] 整型和日期的转换  因为日期是由整数的成员构成的，所以通过成员的读写就可以
+
+
+7.
+//赋值
+
+bool -> System.Boolean (布尔型，其值为 true 或者 false)
+char -> System.Char (字符型，占有两个字节，表示 1 个 Unicode 字符)
+byte -> System.Byte (字节型，占 1 字节，表示 8 位正整数，范围 0 ~ 255)
+sbyte -> System.SByte (带符号字节型，占 1 字节，表示 8 位整数，范围 -128 ~ 127)
+ushort -> System.UInt16 (无符号短整型，占 2 字节，表示 16 位正整数，范围 0 ~ 65,535)
+uint -> System.UInt32 (无符号整型，占 4 字节，表示 32 位正整数，范围 0 ~ 4,294,967,295)
+ulong -> System.UInt64 (无符号长整型，占 8 字节，表示 64 位正整数，范围 0 ~ 大约 10 的 20 次方)
+short -> System.Int16 (短整型，占 2 字节，表示 16 位整数，范围 -32,768 ~ 32,767)
+int -> System.Int32 (整型，占 4 字节，表示 32 位整数，范围 -2,147,483,648 到 2,147,483,647)
+long -> System.Int64 (长整型，占 8 字节，表示 64 位整数，范围大约 -(10 的 19) 次方 到 10 的 19 次方)
+float -> System.Single (单精度浮点型，占 4 个字节)
+double -> System.Double (双精度浮点型，占 8 个字节)
+
+
+8.
+//数组
+
+int[,] 是二维数组，它就是传统意义上 n x m 的表，和 C++ 里的 int[][] 是一个意思。
+int[][] 是交错数组，与 C++ 里的 int[][] 不同。它其实是一个 int[] 里嵌套着 int[]，可以理解为 (int[])[]。具体可以看我附的图例。
+
+9.
+//+=
+  sum+=i;  //这里sum+=i等价于 sum=sum+i;
+
+  
+  
+  
+10.
+//my first crawls
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+using System.Net;
+using System.Data.SqlClient;
+using System.Data;
+
+
+
+
+namespace ConsoleApplication2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Create the web request  
+            string url = "http://www.baidu.com/s?wd=手机1";
+
+            int[] array = new int[900000];
+            for (int i = 0; i <= 899999; i++)
+            {
+                array[i] = i;
+            };
+
+
+            foreach (var query in array)
+            {
+                HttpWebRequest request = WebRequest.Create(url + query) as HttpWebRequest;
+
+                // Get response  
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                StreamReader reader = new StreamReader(response.GetResponseStream());
+                //Console.WriteLine(reader.ReadToEnd());
+
+                //insert into DB
+                string localConnection = "Initial Catalog=test;Data Source=localhost;Integrated Security=SSPI ";
+                SqlConnection _db = new SqlConnection(localConnection);
+                string myInsert = "insert into new_test(id,body) values(2,@body)";
+                // var  @body = reader;
+                using (SqlConnection connection = new SqlConnection(localConnection))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(myInsert, connection))
+                    {
+                        command.Parameters.Add("@body", reader);
+                        command.ExecuteNonQuery();
+                    }
+
+                }
+
+
+
+            }
+        }
+    }
+}
+
+
