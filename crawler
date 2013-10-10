@@ -253,3 +253,9 @@ namespace ConsoleApplication2
 }
 
 
+
+11.
+11.
+//防止爬虫被封，延迟10S执行一次
+System.Threading.Thread.Sleep(10000);
+
